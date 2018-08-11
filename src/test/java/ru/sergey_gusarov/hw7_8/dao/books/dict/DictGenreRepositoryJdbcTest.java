@@ -105,16 +105,54 @@ class DictGenreRepositoryJdbcTest {
 
     @Test
     @DisplayName("delete")
+    @Sql(scripts = "classpath:add_genre.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void delete() {
+        List<Genre> genres = dictGenreRepository.findAll();
+        Genre genre = dictGenreRepository.getById(1);
+        dictGenreRepository.delete(genre);
+        Genre genreFromDb = dictGenreRepository.getById(1);
+        genres = dictGenreRepository.findAll();
+        assertEquals(2L, genres.size());
+        // Попытка удалить несуществующую запись
+        Throwable nullResult = assertThrows(IllegalArgumentException.class, () -> {
+                    Genre genreCantDelete = dictGenreRepository.getById(1);
+                    if (genreCantDelete == null)
+                        throw new IllegalArgumentException("attempt to create delete event with null entity");
+            dictGenreRepository.deleteById(genreCantDelete.getId());
+                }
+        );
+        assertEquals("attempt to create delete event with null entity",
+                nullResult.getMessage(), "Doesn't throw exception");
     }
 
     @Test
     @DisplayName("Delete by id")
+    @Sql(scripts = "classpath:add_genre.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void deleteById() {
+        Genre genre = dictGenreRepository.getById(1);
+        dictGenreRepository.deleteById(genre.getId());
+        Genre genreFromDb = dictGenreRepository.getById(1);
+        List<Genre> genres = dictGenreRepository.findAll();
+        assertEquals(2L, genres.size());
+        // Попытка удалить несуществующую запись
+        Throwable nullResult = assertThrows(IllegalArgumentException.class, () -> {
+                    Genre genreCantDelete = dictGenreRepository.getById(1);
+                    if (genreCantDelete == null)
+                        throw new IllegalArgumentException("attempt to create delete event with null entity");
+                    dictGenreRepository.deleteById(genreCantDelete.getId());
+                }
+        );
+        assertEquals("attempt to create delete event with null entity",
+                nullResult.getMessage(), "Doesn't throw exception");
     }
 
     @Test
     @DisplayName("Save")
+    @Sql(scripts = "classpath:add_genre.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void save() {
+        Genre genre = dictGenreRepository.getById(1);
+        String nameGenre = genre.getName();
+        Genre genreFromDb = dictGenreRepository.save(new Genre(nameGenre));
+        assertEquals(1, genreFromDb.getId());
     }
 }

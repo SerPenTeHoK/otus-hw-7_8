@@ -1,5 +1,6 @@
 package ru.sergey_gusarov.hw7_8.dao.books;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,9 +58,14 @@ class BookRepositoryJdbcTest {
         return book;
     }
 
+    @BeforeEach
+    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    private void reSetupSchema(){
+
+    };
+
     @Test
     @DisplayName("Count")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void count() {
         bookRepositoryJdbc.insert(new Book("Title1"));
         bookRepositoryJdbc.insert(new Book("Title2"));
@@ -70,7 +76,6 @@ class BookRepositoryJdbcTest {
 
     @Test
     @DisplayName("Insert")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void insert() {
         Book original = dummyBook1Genre1Author2();
         bookRepositoryJdbc.insert(original);
@@ -81,7 +86,6 @@ class BookRepositoryJdbcTest {
 
     @Test
     @DisplayName("Get by id")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getById() {
         Book original = dummyBook3Genre1AuthorName3();
         bookRepositoryJdbc.insert(original);
@@ -94,7 +98,6 @@ class BookRepositoryJdbcTest {
 
     @Test
     @DisplayName("Get by title")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByTitle() {
         Book original = dummyBook1Genre1Author2();
         bookRepositoryJdbc.insert(original);
@@ -105,7 +108,6 @@ class BookRepositoryJdbcTest {
 
     @Test
     @DisplayName("Find all")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void findAll() {
         final int COUNT_ITERATION = 3;
         List<Book> books = new ArrayList<>();
@@ -127,7 +129,6 @@ class BookRepositoryJdbcTest {
 
     @Test
     @DisplayName("Update")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void update() {
         String updatedTitle = "Update title";
         Book book = dummyBook1Genre1Author2();
@@ -141,7 +142,6 @@ class BookRepositoryJdbcTest {
 
     @Test
     @DisplayName("Delete")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void delete() {
         final int COUNT_ITERATION = 3;
         List<Book> books = new ArrayList<>();
@@ -184,7 +184,6 @@ class BookRepositoryJdbcTest {
 
     @Test
     @DisplayName("Delete by id")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void deleteById() {
         final int COUNT_ITERATION = 3;
         List<Book> books = new ArrayList<>();
@@ -262,7 +261,6 @@ class BookRepositoryJdbcTest {
 
     @Test
     @DisplayName("Add book comment by book")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void addBookCommentByBook() {
         Book originalBook = dummyBook1Genre1Author2();
         bookRepositoryJdbc.insert(originalBook);

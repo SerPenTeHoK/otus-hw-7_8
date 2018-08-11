@@ -1,5 +1,6 @@
 package ru.sergey_gusarov.hw7_8.dao.books;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,9 +54,14 @@ class BookCommentRepositoryJdbcTest {
         return bookComment;
     }
 
+    @BeforeEach
+    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    private void reSetupSchema(){
+
+    };
+
     @Test
     @DisplayName("Count")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void count() {
         Book book = dummyBook1Genre1Author2();
         book = addToBookComment(book, "Comment01");
@@ -67,7 +73,6 @@ class BookCommentRepositoryJdbcTest {
 
     @Test
     @DisplayName("Book comment insert")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void insert() {
         String commentStr = "Comment1";
         Book originalBook = dummyBook1Genre1Author2();
@@ -82,7 +87,6 @@ class BookCommentRepositoryJdbcTest {
 
     @Test
     @DisplayName("Book comment by Id")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getById() {
         String commentStr = "Comment2";
         BookComment bookComment = new BookComment();
@@ -95,7 +99,6 @@ class BookCommentRepositoryJdbcTest {
 
     @Test
     @DisplayName("Find all")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void findAll() {
         final int COUNT_ITERATION = 3;
         Book book = dummyBook1Genre1Author2();
@@ -119,7 +122,6 @@ class BookCommentRepositoryJdbcTest {
 
     @Test
     @DisplayName("Update")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void update() {
         String commentStrUpdate = "update comment";
         Book book = dummyBook1Genre1Author2();
@@ -139,7 +141,6 @@ class BookCommentRepositoryJdbcTest {
 
     @Test
     @DisplayName("Delete")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void delete() {
         final long COUNT_ITERATION = 3;
         Book book = dummyBook1Genre1Author2();
@@ -182,7 +183,6 @@ class BookCommentRepositoryJdbcTest {
 
     @Test
     @DisplayName("Delete by id")
-    @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void deleteById() {
         final long COUNT_ITERATION = 3;
         Book book = dummyBook1Genre1Author2();
